@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:glootie_marketplace/src/resources/appColors.dart';
+import 'package:glootie_marketplace/src/shared/colors/app_colors.dart';
 
 class HomePage extends StatefulWidget {
   HomePage() : super();
