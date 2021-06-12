@@ -5,7 +5,5 @@ import 'package:glootie_marketplace/app.dart';
 void main() {
   EquatableConfig.stringify = true;
 
-  runApp(
-    App(),
-  );
+  runApp(App());
 }
