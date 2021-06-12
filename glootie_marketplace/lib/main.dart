@@ -1,17 +1,11 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:glootie_marketplace/src/pages/home_page.dart';
+import 'package:glootie_marketplace/app.dart';
 
 void main() {
-  runApp(MyApp());
-}
+  EquatableConfig.stringify = true;
 
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Glootie Marketplace',
-      home: HomePage(),
-    );
-  }
+  runApp(
+    App(),
+  );
 }
