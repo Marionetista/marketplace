@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:glootie_marketplace/src/features/home/cubit/home_page_cubit.dart';
 import 'package:graphql/client.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'src/features/home/home_page.dart';
@@ -29,7 +31,12 @@ class App extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Glootie Marketplace',
-        home: HomePage(),
+        home: BlocProvider<HomePageCubit>(
+          create: (context) => HomePageCubit(
+            client.value,
+          )..getCustomer(),
+          child: HomePage(),
+        ),
       ),
     );
   }
