@@ -14,13 +14,7 @@ class AppColors extends Color {
   }
 
   // Pink Color Shade - Body
-  static const Color brokenAmethyst = Color(0xffcf62af);
-  static const Color pinky = Color(0xfff1b4e2);
-  static const Color violet = Color(0xff842672);
-  static const Color whitePink = Color(0xfffef4fe);
-
-  // Blue Color Shade - Eyes
-  static const Color darkBlue = Color(0xff1d3f67);
-  static const Color mediumBlue = Color(0xff466d89);
-  static const Color cyan = Color(0xff87d7f4);
+  static const Color pinky = Color(0xffd05dad);
+  static const Color whitePinky = Color(0xfffcf2f9);
+  static const Color acai = Color(0xff5b516e);
 }
