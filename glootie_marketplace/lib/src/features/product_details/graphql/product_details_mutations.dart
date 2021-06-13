@@ -1,4 +1,4 @@
-class Mutation {
+class ProductDetailsMutation {
   static String purchase(String offerId) => '''
     mutation purchase {
       purchase(offerId: "$offerId") {

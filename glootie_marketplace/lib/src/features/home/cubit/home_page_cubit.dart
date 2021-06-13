@@ -30,9 +30,7 @@ class HomePageCubit extends Cubit<HomePageState> {
 
       emit(HomePageLoaded(customer: customer));
     } catch (error) {
-      emit(
-        HomePageError(),
-      );
+      emit(HomePageError());
     }
   }
 

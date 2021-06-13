@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:glootie_marketplace/src/features/home/cubit/home_page_cubit.dart';
+import 'package:glootie_marketplace/src/features/product_details/product_details_page.dart';
 import 'package:glootie_marketplace/src/shared/colors/app_colors.dart';
 import 'package:glootie_marketplace/src/shared/models/offer_model.dart';
 
@@ -113,7 +114,11 @@ class _HomePageState extends State<HomePage> {
     required String price,
   }) =>
       GestureDetector(
-        onTap: () {},
+        onTap: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => ProductsDetailsPage()),
+          );
+        },
         child: Container(
           height: 112.0,
           color: AppColors.whitePinky,
