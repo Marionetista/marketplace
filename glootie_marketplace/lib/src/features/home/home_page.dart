@@ -108,67 +108,46 @@ class _HomePageState extends State<HomePage> {
         ),
       );
 
-  Widget buildOfferCard({
+  Widget listTile({
     required String image,
     required String productName,
     required String price,
   }) =>
-      GestureDetector(
-        onTap: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => ProductsDetailsPage()),
-          );
-        },
-        child: Container(
-          height: 112.0,
-          color: AppColors.whitePinky,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 24.0,
-                  horizontal: 20.0,
-                ),
-                child: Image.network(image),
-              ),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      productName,
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                        fontSize: 18.0,
-                        color: AppColors.acai,
-                      ),
-                    ),
-                    Text(
-                      '\$ $price',
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                        fontFamily: 'Russo',
-                        fontSize: 24.0,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20.0,
-                ),
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: Icon(
-                    Icons.arrow_forward_ios_rounded,
-                    color: AppColors.pinky,
-                  ),
-                ),
-              ),
-            ],
+      ListTile(
+        contentPadding: EdgeInsets.symmetric(
+          vertical: 5.0,
+          horizontal: 24.0,
+        ),
+        leading: Image.network(
+          image,
+          width: 60.0,
+          height: 60.0,
+          fit: BoxFit.cover,
+        ),
+        title: Text(
+          productName,
+          textAlign: TextAlign.left,
+          style: TextStyle(
+            fontSize: 18.0,
+            color: AppColors.acai,
+          ),
+        ),
+        subtitle: Text(
+          '\$ $price',
+          textAlign: TextAlign.left,
+          style: TextStyle(
+            color: Colors.black,
+            fontFamily: 'Russo',
+            fontSize: 24.0,
+          ),
+        ),
+        trailing: Icon(
+          Icons.arrow_forward_ios_rounded,
+          color: AppColors.pinky,
+        ),
+        onTap: () => Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => ProductsDetailsPage(),
           ),
         ),
       );
@@ -176,7 +155,7 @@ class _HomePageState extends State<HomePage> {
   Widget buildOffersList(List<OfferModel> offers) => ListView.builder(
         shrinkWrap: true,
         itemCount: offers.length,
-        itemBuilder: (context, index) => buildOfferCard(
+        itemBuilder: (context, index) => listTile(
           productName: offers[index].product.name,
           price: offers[index].price.toString(),
           image: offers[index].product.image,

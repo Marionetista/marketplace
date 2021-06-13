@@ -21,10 +21,10 @@ class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
               padding: const EdgeInsets.only(
                 left: 10.0,
               ),
-              child: InkWell(
-                onTap: () => Navigator.pop(context),
+              child: TextButton(
+                onPressed: () => Navigator.pop(context),
                 child: Text(
-                  'Voltar',
+                  'Back',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: AppColors.pinky,
