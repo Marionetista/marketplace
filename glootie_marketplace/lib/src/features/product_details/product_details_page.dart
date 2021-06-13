@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:glootie_marketplace/src/features/product_details/cubit/product_details_cubit.dart';
 import 'package:glootie_marketplace/src/shared/colors/app_colors.dart';
 import 'package:glootie_marketplace/src/shared/models/offer_model.dart';
-import 'package:intl/intl.dart';
+import 'package:glootie_marketplace/src/shared/utils/tools.dart';
 
 class ProductsDetailsPage extends StatefulWidget {
   ProductsDetailsPage({
@@ -185,9 +185,4 @@ class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
           ),
         ),
       );
-
-  String formatBalance(int balance) => NumberFormat.currency(
-        locale: 'en-US',
-        symbol: '\$ ',
-      ).format(balance == 0 ? 0 : balance / 100);
 }

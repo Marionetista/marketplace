@@ -6,8 +6,8 @@ import 'package:glootie_marketplace/src/features/product_details/product_details
 import 'package:glootie_marketplace/src/shared/colors/app_colors.dart';
 import 'package:glootie_marketplace/src/shared/models/customer_model.dart';
 import 'package:glootie_marketplace/src/shared/models/offer_model.dart';
+import 'package:glootie_marketplace/src/shared/utils/tools.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:intl/intl.dart';
 
 class HomePage extends StatefulWidget {
   HomePage() : super();
@@ -157,7 +157,6 @@ class _HomePageState extends State<HomePage> {
       ),
       onTap: () async {
         final result = await Navigator.of(context).push<CustomerModel>(
-          // separar widget.
           MaterialPageRoute(
             builder: (context) => BlocProvider<ProductDetailsCubit>(
               create: (context) => ProductDetailsCubit(
@@ -171,11 +170,6 @@ class _HomePageState extends State<HomePage> {
       },
     );
   }
-
-  String formatBalance(int balance) => NumberFormat.currency(
-        locale: 'en-US',
-        symbol: '\$ ',
-      ).format(balance == 0 ? 0 : balance / 100);
 
   Widget buildOffersList(List<OfferModel> offers) => ListView.builder(
         shrinkWrap: true,
