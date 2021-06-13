@@ -13,11 +13,21 @@ class ProductDetailsError extends ProductDetailsState {
   List<Object> get props => [];
 }
 
-class ProductDetailsLoaded extends ProductDetailsState {
-  final ProductModel product;
+class ProductDetailsPurchaseResult extends ProductDetailsState {
+  final bool success;
+  final CustomerModel customer;
+  final String? errorMessage;
 
-  ProductDetailsLoaded({required this.product});
+  ProductDetailsPurchaseResult({
+    required this.success,
+    required this.customer,
+    this.errorMessage,
+  });
 
   @override
-  List<Object?> get props => [product];
+  List<Object?> get props => [
+        success,
+        customer,
+        errorMessage,
+      ];
 }
