@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:glootie_marketplace/src/features/home/cubit/home_page_cubit.dart';
+import 'package:glootie_marketplace/src/features/product_details/cubit/product_details_cubit.dart';
 import 'package:glootie_marketplace/src/features/product_details/product_details_page.dart';
 import 'package:glootie_marketplace/src/shared/colors/app_colors.dart';
+import 'package:glootie_marketplace/src/shared/models/customer_model.dart';
 import 'package:glootie_marketplace/src/shared/models/offer_model.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:intl/intl.dart';
 
 class HomePage extends StatefulWidget {
@@ -14,6 +17,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  HomePageCubit get cubit => BlocProvider.of<HomePageCubit>(context);
+
   @override
   Widget build(BuildContext context) =>
       BlocConsumer<HomePageCubit, HomePageState>(
@@ -112,45 +117,57 @@ class _HomePageState extends State<HomePage> {
 
   Widget listTile(
     OfferModel offer,
-  ) =>
-      ListTile(
-        contentPadding: EdgeInsets.symmetric(
-          vertical: 5.0,
-          horizontal: 24.0,
+  ) {
+    final client = GraphQLProvider.of(context).value;
+
+    return ListTile(
+      contentPadding: EdgeInsets.symmetric(
+        vertical: 5.0,
+        horizontal: 24.0,
+      ),
+      leading: Image.network(
+        offer.product.image,
+        width: 60.0,
+        height: 60.0,
+        fit: BoxFit.cover,
+      ),
+      title: Text(
+        offer.product.name,
+        textAlign: TextAlign.left,
+        style: TextStyle(
+          fontSize: 18.0,
+          color: AppColors.acai,
         ),
-        leading: Image.network(
-          offer.product.image,
-          width: 60.0,
-          height: 60.0,
-          fit: BoxFit.cover,
+      ),
+      subtitle: Text(
+        formatBalance(offer.price),
+        textAlign: TextAlign.left,
+        style: TextStyle(
+          color: Colors.black,
+          fontFamily: 'Russo',
+          fontSize: 24.0,
         ),
-        title: Text(
-          offer.product.name,
-          textAlign: TextAlign.left,
-          style: TextStyle(
-            fontSize: 18.0,
-            color: AppColors.acai,
-          ),
-        ),
-        subtitle: Text(
-          formatBalance(offer.price),
-          textAlign: TextAlign.left,
-          style: TextStyle(
-            color: Colors.black,
-            fontFamily: 'Russo',
-            fontSize: 24.0,
-          ),
-        ),
-        trailing: Icon(
-          Icons.arrow_forward_ios_rounded,
-          color: AppColors.pinky,
-        ),
-        onTap: () => Navigator.of(context).push(
+      ),
+      trailing: Icon(
+        Icons.arrow_forward_ios_rounded,
+        color: AppColors.pinky,
+      ),
+      onTap: () async {
+        final result = await Navigator.of(context).push<CustomerModel>(
+          // separar widget.
           MaterialPageRoute(
-            builder: (context) => ProductsDetailsPage(),
+            builder: (context) => BlocProvider<ProductDetailsCubit>(
+              create: (context) => ProductDetailsCubit(
+                client,
+              ),
+              child: ProductsDetailsPage(offer),
+            ),
           ),
-        ),
-      );
+        );
+        cubit.updateCustomer(result);
+      },
+    );
+  }
 
   String formatBalance(int balance) => NumberFormat.currency(
         locale: 'en-US',
