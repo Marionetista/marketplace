@@ -48,7 +48,7 @@ class _HomePageState extends State<HomePage> {
                           SliverAppBar(
                             backgroundColor: Colors.white,
                             expandedHeight: 120.0,
-                            flexibleSpace: buildPageTitle(),
+                            flexibleSpace: buildPageTitle(customer?.name ?? ''),
                           ),
                           SliverToBoxAdapter(
                             child: Column(
@@ -66,7 +66,7 @@ class _HomePageState extends State<HomePage> {
         },
       );
 
-  Padding buildPageTitle() => Padding(
+  Padding buildPageTitle(String customerName) => Padding(
         padding: const EdgeInsets.only(
           top: 49.0,
           bottom: 16.0,
@@ -74,16 +74,18 @@ class _HomePageState extends State<HomePage> {
           right: 24.0,
         ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
+            Image.asset('assets/glootie.png'),
+            SizedBox(
+              width: 20,
+            ),
             Text(
-              'Offers',
+              'Hello $customerName! \nHere\'s your offers:',
               style: TextStyle(
-                fontSize: 32.0,
+                fontSize: 20.0,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            Image.asset('assets/glootie.png'),
           ],
         ),
       );
