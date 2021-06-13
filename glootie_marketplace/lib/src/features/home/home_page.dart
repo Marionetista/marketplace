@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:glootie_marketplace/src/features/home/cubit/home_page_cubit.dart';
 import 'package:glootie_marketplace/src/shared/colors/app_colors.dart';
+import 'package:glootie_marketplace/src/shared/models/offer_model.dart';
 
 class HomePage extends StatefulWidget {
   HomePage() : super();
@@ -17,30 +18,51 @@ class _HomePageState extends State<HomePage> {
         listener: (context, state) {
           print(state);
         },
-        builder: (context, snapshot) => Scaffold(
-          backgroundColor: Colors.white,
-          body: SafeArea(
-            child: Align(
-              alignment: Alignment.topCenter,
-              child: Column(
-                children: <Widget>[
-                  buildPageTitle(),
-                  buildOfferCard(),
-                  buildOfferCard(),
-                  buildOfferCard(),
-                ],
-              ),
+        builder: (context, state) {
+          final isLoading = state is HomePageLoading;
+
+          final offers =
+              state is HomePageLoaded ? state.customer.offers : <OfferModel>[];
+
+          return Scaffold(
+            backgroundColor: Colors.white,
+            body: SafeArea(
+              child: isLoading
+                  ? Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : Container(
+                      color: AppColors.whitePinky,
+                      child: CustomScrollView(
+                        slivers: [
+                          SliverAppBar(
+                            foregroundColor: Colors.white,
+                            backgroundColor: Colors.white,
+                            expandedHeight: 120.0,
+                            flexibleSpace: buildPageTitle(),
+                          ),
+                          SliverToBoxAdapter(
+                            child: Column(
+                              children: [
+                                buildOffersList(offers),
+                                buildBalanceDisplay(),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
             ),
-          ),
-        ),
+          );
+        },
       );
 
   Padding buildPageTitle() => Padding(
         padding: const EdgeInsets.only(
-          top: 49,
-          bottom: 16,
-          left: 24,
-          right: 24,
+          top: 49.0,
+          bottom: 16.0,
+          left: 24.0,
+          right: 24.0,
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -48,86 +70,109 @@ class _HomePageState extends State<HomePage> {
             Text(
               'Offers',
               style: TextStyle(
-                fontSize: 32,
+                fontSize: 32.0,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            CircleAvatar(
-              backgroundColor: Colors.pink,
-            ),
+            Image.asset('assets/glootie.png'),
           ],
         ),
       );
 
-  Widget buildDivider() => Column(
-        children: const [
-          SizedBox(height: 34.0),
-          Divider(
-            height: 1,
-            color: AppColors.acai,
-          ),
-        ],
-      );
-
-  Widget buildOfferCard() => Container(
-        height: 112.0,
-        color: AppColors.whitePinky,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                vertical: 24.0,
-                horizontal: 20.0,
+  Widget buildOfferCard({
+    required String image,
+    required String productName,
+    required String price,
+  }) =>
+      GestureDetector(
+        onTap: () {},
+        child: Container(
+          height: 112.0,
+          color: AppColors.whitePinky,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 24.0,
+                  horizontal: 20.0,
+                ),
+                child: Image.network(image),
               ),
-              child: Image.network(
-                'https://picsum.photos/250?image=9',
-              ),
-            ),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'MeeseksBox',
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                      fontSize: 18.0,
-                      color: AppColors.acai,
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      productName,
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                        fontSize: 18.0,
+                        color: AppColors.acai,
+                      ),
                     ),
-                  ),
-                  Text(
-                    'R\$ 56,99',
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                      fontSize: 24.0,
-                      fontWeight: FontWeight.bold,
+                    Text(
+                      '\$ $price',
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                        fontFamily: 'Russo',
+                        fontSize: 24.0,
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 20.0,
-              ),
-              child: Align(
-                alignment: Alignment.centerRight,
-                child: Icon(
-                  Icons.arrow_forward_ios_rounded,
-                  color: AppColors.pinky,
+                  ],
                 ),
               ),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20.0,
+                ),
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: Icon(
+                    Icons.arrow_forward_ios_rounded,
+                    color: AppColors.pinky,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+
+  Widget buildOffersList(List<OfferModel> offers) => ListView.builder(
+        shrinkWrap: true,
+        itemCount: offers.length,
+        itemBuilder: (context, index) => buildOfferCard(
+          productName: offers[index].product.name,
+          price: offers[index].price.toString(),
+          image: offers[index].product.image,
+        ),
+      );
+
+  Widget buildBalanceDisplay() => Padding(
+        padding: const EdgeInsets.symmetric(
+          vertical: 10.0,
+          horizontal: 24.0,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Text(
+              'Your Balance: ',
+              style: TextStyle(
+                fontSize: 23.0,
+              ),
+            ),
+            Text(
+              '10000',
+              textAlign: TextAlign.left,
+              style: TextStyle(
+                fontSize: 23.0,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ],
         ),
       );
-
-  // Widget buildOffersList() => ListView.builder(
-  //       shrinkWrap: true,
-  //       itemCount: pendingDeviceAuthorizations.length,
-  //       itemBuilder: (context, index) => pendingDeviceCard(
-  //           pendingDeviceAuthorization: pendingDeviceAuthorizations[index]),
-  //     );
 }

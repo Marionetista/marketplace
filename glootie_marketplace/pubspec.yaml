@@ -47,6 +47,10 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+
+  assets:
+    - assets/glootie.png
+    - assets/icon.png
   
   fonts:
     - family: Russo
