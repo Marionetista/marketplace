@@ -18,11 +18,15 @@ class HomePageCubit extends Cubit<HomePageState> {
     try {
       emit(HomePageLoading());
 
-      final result = await graphQL.query(
-        QueryOptions(
-          document: gql(HomeQueries.customer),
-        ),
-      );
+      final result = await graphQL
+          .query(
+            QueryOptions(
+              document: gql(HomeQueries.customer),
+            ),
+          )
+          .timeout(
+            Duration(seconds: 10),
+          );
 
       final data = result.data!['viewer'] as Map<String, Object?>;
 

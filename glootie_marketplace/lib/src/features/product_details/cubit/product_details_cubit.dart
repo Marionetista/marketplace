@@ -32,18 +32,20 @@ class ProductDetailsCubit extends Cubit<ProductDetailsState> {
 
       final data = result.data!['purchase'] as Map<String, Object?>;
 
-      final customer =
-          CustomerModel.fromJson(data['customer'] as Map<String, Object?>);
-
-      emit(
-        ProductDetailsPurchaseResult(
-          success: data['success'] as bool,
-          customer: customer,
-          errorMessage: data['errorMessage'] as String?,
-        ),
-      );
+      emit(_makePurchaseResult(data));
     } catch (error) {
       emit(ProductDetailsError());
     }
+  }
+
+  ProductDetailsPurchaseResult _makePurchaseResult(Map<String, Object?> data) {
+    final customer =
+        CustomerModel.fromJson(data['customer'] as Map<String, Object?>);
+
+    return ProductDetailsPurchaseResult(
+      success: data['success'] as bool,
+      customer: customer,
+      errorMessage: data['errorMessage'] as String?,
+    );
   }
 }
