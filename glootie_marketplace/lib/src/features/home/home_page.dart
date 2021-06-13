@@ -4,6 +4,7 @@ import 'package:glootie_marketplace/src/features/home/cubit/home_page_cubit.dart
 import 'package:glootie_marketplace/src/features/product_details/product_details_page.dart';
 import 'package:glootie_marketplace/src/shared/colors/app_colors.dart';
 import 'package:glootie_marketplace/src/shared/models/offer_model.dart';
+import 'package:intl/intl.dart';
 
 class HomePage extends StatefulWidget {
   HomePage() : super();
@@ -22,8 +23,9 @@ class _HomePageState extends State<HomePage> {
         builder: (context, state) {
           final isLoading = state is HomePageLoading;
 
-          final offers =
-              state is HomePageLoaded ? state.customer.offers : <OfferModel>[];
+          final customer = state is HomePageLoaded ? state.customer : null;
+
+          final offers = customer?.offers ?? <OfferModel>[];
 
           return Scaffold(
             backgroundColor: Colors.white,
@@ -46,7 +48,7 @@ class _HomePageState extends State<HomePage> {
                           SliverToBoxAdapter(
                             child: Column(
                               children: [
-                                buildBalanceDisplay(),
+                                buildBalanceDisplay(customer?.balance ?? 0),
                                 buildOffersList(offers),
                               ],
                             ),
@@ -81,7 +83,7 @@ class _HomePageState extends State<HomePage> {
         ),
       );
 
-  Widget buildBalanceDisplay() => Padding(
+  Widget buildBalanceDisplay(int balance) => Padding(
         padding: const EdgeInsets.symmetric(
           vertical: 10.0,
           horizontal: 24.0,
@@ -96,7 +98,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             Text(
-              '\$ 10000',
+              formatBalance(balance),
               textAlign: TextAlign.left,
               style: TextStyle(
                 fontFamily: 'Russo',
@@ -108,24 +110,22 @@ class _HomePageState extends State<HomePage> {
         ),
       );
 
-  Widget listTile({
-    required String image,
-    required String productName,
-    required String price,
-  }) =>
+  Widget listTile(
+    OfferModel offer,
+  ) =>
       ListTile(
         contentPadding: EdgeInsets.symmetric(
           vertical: 5.0,
           horizontal: 24.0,
         ),
         leading: Image.network(
-          image,
+          offer.product.image,
           width: 60.0,
           height: 60.0,
           fit: BoxFit.cover,
         ),
         title: Text(
-          productName,
+          offer.product.name,
           textAlign: TextAlign.left,
           style: TextStyle(
             fontSize: 18.0,
@@ -133,7 +133,7 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         subtitle: Text(
-          '\$ $price',
+          formatBalance(offer.price),
           textAlign: TextAlign.left,
           style: TextStyle(
             color: Colors.black,
@@ -152,13 +152,14 @@ class _HomePageState extends State<HomePage> {
         ),
       );
 
+  String formatBalance(int balance) => NumberFormat.currency(
+        locale: 'en-US',
+        symbol: '\$ ',
+      ).format(balance == 0 ? 0 : balance / 100);
+
   Widget buildOffersList(List<OfferModel> offers) => ListView.builder(
         shrinkWrap: true,
         itemCount: offers.length,
-        itemBuilder: (context, index) => listTile(
-          productName: offers[index].product.name,
-          price: offers[index].price.toString(),
-          image: offers[index].product.image,
-        ),
+        itemBuilder: (context, index) => listTile(offers[index]),
       );
 }
