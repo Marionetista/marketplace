@@ -109,6 +109,7 @@ class _HomePageState extends State<HomePage> {
                 fontFamily: 'Russo',
                 fontSize: 24.0,
                 fontWeight: FontWeight.bold,
+                color: AppColors.pinky,
               ),
             ),
           ],
@@ -121,7 +122,7 @@ class _HomePageState extends State<HomePage> {
     final client = GraphQLProvider.of(context).value;
 
     return ListTile(
-      contentPadding: EdgeInsets.symmetric(
+      contentPadding: const EdgeInsets.symmetric(
         vertical: 5.0,
         horizontal: 24.0,
       ),
@@ -160,7 +161,7 @@ class _HomePageState extends State<HomePage> {
               create: (context) => ProductDetailsCubit(
                 client,
               ),
-              child: ProductsDetailsPage(offer),
+              child: ProductsDetailsPage(offer: offer),
             ),
           ),
         );
