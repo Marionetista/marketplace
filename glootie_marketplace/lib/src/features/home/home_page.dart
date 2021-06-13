@@ -29,7 +29,9 @@ class _HomePageState extends State<HomePage> {
             body: SafeArea(
               child: isLoading
                   ? Center(
-                      child: CircularProgressIndicator(),
+                      child: CircularProgressIndicator(
+                        color: AppColors.pinky,
+                      ),
                     )
                   : Container(
                       color: AppColors.whitePinky,
@@ -74,6 +76,33 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             Image.asset('assets/glootie.png'),
+          ],
+        ),
+      );
+
+  Widget buildBalanceDisplay() => Padding(
+        padding: const EdgeInsets.symmetric(
+          vertical: 10.0,
+          horizontal: 24.0,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'Your Balance: ',
+              style: TextStyle(
+                fontSize: 20.0,
+              ),
+            ),
+            Text(
+              '\$ 10000',
+              textAlign: TextAlign.left,
+              style: TextStyle(
+                fontFamily: 'Russo',
+                fontSize: 24.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ],
         ),
       );
@@ -146,33 +175,6 @@ class _HomePageState extends State<HomePage> {
           productName: offers[index].product.name,
           price: offers[index].price.toString(),
           image: offers[index].product.image,
-        ),
-      );
-
-  Widget buildBalanceDisplay() => Padding(
-        padding: const EdgeInsets.symmetric(
-          vertical: 10.0,
-          horizontal: 24.0,
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              'Your Balance: ',
-              style: TextStyle(
-                fontSize: 20.0,
-              ),
-            ),
-            Text(
-              '\$ 10000',
-              textAlign: TextAlign.left,
-              style: TextStyle(
-                fontFamily: 'Russo',
-                fontSize: 24.0,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
         ),
       );
 }
