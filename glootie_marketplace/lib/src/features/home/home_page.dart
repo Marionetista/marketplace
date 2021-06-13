@@ -36,7 +36,6 @@ class _HomePageState extends State<HomePage> {
                       child: CustomScrollView(
                         slivers: [
                           SliverAppBar(
-                            foregroundColor: Colors.white,
                             backgroundColor: Colors.white,
                             expandedHeight: 120.0,
                             flexibleSpace: buildPageTitle(),
@@ -44,8 +43,8 @@ class _HomePageState extends State<HomePage> {
                           SliverToBoxAdapter(
                             child: Column(
                               children: [
-                                buildOffersList(offers),
                                 buildBalanceDisplay(),
+                                buildOffersList(offers),
                               ],
                             ),
                           ),
@@ -156,19 +155,20 @@ class _HomePageState extends State<HomePage> {
           horizontal: 24.0,
         ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
               'Your Balance: ',
               style: TextStyle(
-                fontSize: 23.0,
+                fontSize: 20.0,
               ),
             ),
             Text(
-              '10000',
+              '\$ 10000',
               textAlign: TextAlign.left,
               style: TextStyle(
-                fontSize: 23.0,
+                fontFamily: 'Russo',
+                fontSize: 24.0,
                 fontWeight: FontWeight.bold,
               ),
             ),
