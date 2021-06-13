@@ -25,7 +25,18 @@ class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
       BlocConsumer<ProductDetailsCubit, ProductDetailsState>(
         listener: (context, state) {
           if (state is ProductDetailsPurchaseResult) {
-            Navigator.pop(context, state.customer);
+            final title = state.success ? 'Yeah!' : 'Oops';
+            final message =
+                state.success ? 'Purchase successful!' : state.errorMessage;
+            return showMessage(
+              context,
+              title: title,
+              message: message,
+              onPressed: () {
+                Navigator.pop(context);
+                Navigator.pop(context, state.customer);
+              },
+            );
           }
         },
         builder: (context, state) => Scaffold(
@@ -68,26 +79,7 @@ class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 15.0),
-                  child: ElevatedButton(
-                    onPressed: () => cubit.onPurchase(widget.offer.id),
-                    style: ElevatedButton.styleFrom(
-                      primary: AppColors.pinky,
-                      shadowColor: AppColors.pinky,
-                      onPrimary: Colors.white,
-                      elevation: 0,
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 100.0,
-                      ),
-                      child: Text(
-                        'BUY NOW',
-                      ),
-                    ),
-                  ),
-                ),
+                buildButton(),
               ],
             ),
           ),
@@ -182,6 +174,25 @@ class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
                 ),
               ),
             ],
+          ),
+        ),
+      );
+
+  Widget buildButton() => Padding(
+        padding: const EdgeInsets.symmetric(vertical: 15.0),
+        child: ElevatedButton(
+          onPressed: () => cubit.onPurchase(widget.offer.id),
+          style: ElevatedButton.styleFrom(
+            primary: AppColors.pinky,
+            shadowColor: AppColors.pinky,
+            onPrimary: Colors.white,
+            elevation: 0,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 100.0,
+            ),
+            child: Text('BUY NOW'),
           ),
         ),
       );

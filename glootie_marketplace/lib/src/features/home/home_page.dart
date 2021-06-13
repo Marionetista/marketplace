@@ -21,10 +21,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) =>
-      BlocConsumer<HomePageCubit, HomePageState>(
-        listener: (context, state) {
-          print(state);
-        },
+      BlocBuilder<HomePageCubit, HomePageState>(
         builder: (context, state) {
           final isLoading = state is HomePageLoading;
 
@@ -118,9 +115,7 @@ class _HomePageState extends State<HomePage> {
         ),
       );
 
-  Widget listTile(
-    OfferModel offer,
-  ) {
+  Widget listTile(OfferModel offer) {
     final client = GraphQLProvider.of(context).value;
 
     return ListTile(
