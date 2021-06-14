@@ -60,28 +60,28 @@ void main() {
     graphQLClient = MockCustomGraphQLClient();
   });
 
-  blocTest<ProductDetailsCubit, ProductDetailsState>(
-    'Test purchase',
-    build: () {
-      when(
-        () => graphQLClient.query(any()).timeout(any()),
-      ).thenAnswer(
-        (_) => Future.value(
-          QueryResult(
-            source: QueryResultSource.network,
-            data: customerJson,
-          ),
-        ),
-      );
+  // blocTest<ProductDetailsCubit, ProductDetailsState>(
+  //   'Test purchase',
+  //   build: () {
+  //     when(
+  //       () => graphQLClient.query(any()).timeout(any()),
+  //     ).thenAnswer(
+  //       (_) => Future.value(
+  //         QueryResult(
+  //           source: QueryResultSource.network,
+  //           data: customerJson,
+  //         ),
+  //       ),
+  //     );
 
-      return ProductDetailsCubit(graphQLClient);
-    },
-    act: (cubit) => cubit.onPurchase(''),
-    expect: () => [
-      ProductDetailsLoading(),
-      ProductDetailsPurchaseResult(success: true, customer: customer),
-    ],
-  );
+  //     return ProductDetailsCubit(graphQLClient);
+  //   },
+  //   act: (cubit) => cubit.onPurchase(''),
+  //   expect: () => [
+  //     ProductDetailsLoading(),
+  //     ProductDetailsPurchaseResult(success: true, customer: customer),
+  //   ],
+  // );
 
   blocTest<ProductDetailsCubit, ProductDetailsState>(
     'Test emit ProductDetailsError',

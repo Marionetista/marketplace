@@ -60,7 +60,7 @@ void main() {
   });
 
   blocTest<HomePageCubit, HomePageState>(
-    'Test HomePageLoaded',
+    'Test GetCustomer',
     build: () {
       when(
         () => graphQLClient.query(any()).timeout(any()),
@@ -76,6 +76,32 @@ void main() {
       return HomePageCubit(graphQLClient);
     },
     act: (cubit) => cubit.getCustomer(),
+    expect: () => [
+      HomePageLoading(),
+      HomePageLoaded(customer: customer),
+    ],
+  );
+
+  blocTest<HomePageCubit, HomePageState>(
+    'Test UpdateCustomer',
+    build: () {
+      when(
+        () => graphQLClient.query(any()).timeout(any()),
+      ).thenAnswer(
+        (_) => Future.value(
+          QueryResult(
+            source: QueryResultSource.network,
+            data: customerJson,
+          ),
+        ),
+      );
+
+      return HomePageCubit(graphQLClient);
+    },
+    act: (cubit) async {
+      await cubit.getCustomer();
+      cubit.updateCustomer(customer);
+    },
     expect: () => [
       HomePageLoading(),
       HomePageLoaded(customer: customer),
