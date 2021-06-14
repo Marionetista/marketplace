@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:glootie_marketplace/src/features/home/graphql/home_queries.dart';
+import 'package:glootie_marketplace/src/shared/graphql/custom_graphql_client.dart';
 import 'package:glootie_marketplace/src/shared/models/models.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:meta/meta.dart';
@@ -12,7 +13,7 @@ class HomePageCubit extends Cubit<HomePageState> {
     this.graphQL,
   ) : super(HomePageLoading());
 
-  final GraphQLClient graphQL;
+  final CustomGraphQLClient graphQL;
 
   Future<void> getCustomer() async {
     try {

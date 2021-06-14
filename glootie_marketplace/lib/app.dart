@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:glootie_marketplace/src/features/home/cubit/home_page_cubit.dart';
+import 'package:glootie_marketplace/src/shared/graphql/custom_graphql_client.dart';
 import 'package:graphql/client.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'src/features/home/home_page.dart';
@@ -17,12 +18,12 @@ class App extends StatelessWidget {
       },
     );
 
-    final client = ValueNotifier<GraphQLClient>(
-      GraphQLClient(
-        cache: GraphQLCache(
+    final client = ValueNotifier<CustomGraphQLClient>(
+      CustomGraphQLClient(
+        link,
+        GraphQLCache(
           store: InMemoryStore(),
         ),
-        link: link,
       ),
     );
 

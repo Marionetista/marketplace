@@ -154,9 +154,7 @@ class _HomePageState extends State<HomePage> {
         final result = await Navigator.of(context).push<CustomerModel>(
           MaterialPageRoute(
             builder: (context) => BlocProvider<ProductDetailsCubit>(
-              create: (context) => ProductDetailsCubit(
-                client,
-              ),
+              create: (context) => ProductDetailsCubit(client),
               child: ProductsDetailsPage(offer: offer),
             ),
           ),
