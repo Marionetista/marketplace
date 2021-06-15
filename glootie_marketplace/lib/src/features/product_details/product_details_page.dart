@@ -23,47 +23,10 @@ class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
   @override
   Widget build(BuildContext context) =>
       BlocConsumer<ProductDetailsCubit, ProductDetailsState>(
-        listener: (context, state) {
-          if (state is ProductDetailsPurchaseResult) {
-            final title = state.success ? 'Yeah!' : 'Oops';
-            final message =
-                state.success ? 'Purchase successful!' : state.errorMessage;
-            return showMessage(
-              context,
-              title: title,
-              message: message,
-              onPressed: () {
-                Navigator.pop(context);
-                Navigator.pop(context, state.customer);
-              },
-            );
-          }
-        },
+        listener: listener,
         builder: (context, state) => Scaffold(
           backgroundColor: Colors.white,
-          appBar: AppBar(
-            backgroundColor: Colors.white,
-            elevation: 0,
-            leadingWidth: 100,
-            leading: Center(
-              child: Padding(
-                padding: const EdgeInsets.only(
-                  left: 10.0,
-                ),
-                child: TextButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: Text(
-                    'Back',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: AppColors.pinky,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
+          appBar: buildAppBar(),
           body: SafeArea(
             child: Column(
               children: [
@@ -81,6 +44,48 @@ class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
                 ),
                 buildButton(),
               ],
+            ),
+          ),
+        ),
+      );
+
+  void listener(context, state) {
+    if (state is ProductDetailsPurchaseResult) {
+      final title = state.success ? 'Yeah!' : 'Oops';
+      final message =
+          state.success ? 'Purchase successful!' : state.errorMessage;
+
+      return showMessage(
+        context,
+        title: title,
+        message: message,
+        onPressed: () {
+          Navigator.pop(context);
+          Navigator.pop(context, state.customer);
+        },
+      );
+    }
+  }
+
+  AppBar buildAppBar() => AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        leadingWidth: 100,
+        leading: Center(
+          child: Padding(
+            padding: const EdgeInsets.only(
+              left: 10.0,
+            ),
+            child: TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text(
+                'Back',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: AppColors.pinky,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
           ),
         ),

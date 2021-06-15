@@ -115,7 +115,7 @@ class _HomePageState extends State<HomePage> {
         ),
       );
 
-  Widget listTile(OfferModel offer) {
+  Widget offerWidget(OfferModel offer) {
     final client = GraphQLProvider.of(context).value;
 
     return ListTile(
@@ -167,6 +167,6 @@ class _HomePageState extends State<HomePage> {
   Widget buildOffersList(List<OfferModel> offers) => ListView.builder(
         shrinkWrap: true,
         itemCount: offers.length,
-        itemBuilder: (context, index) => listTile(offers[index]),
+        itemBuilder: (context, index) => offerWidget(offers[index]),
       );
 }
