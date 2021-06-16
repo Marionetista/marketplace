@@ -1,5 +1,4 @@
 # glootie_marketplace
-
 Glootie is a Rick And Morty character from "The Old Man and the Seat" episode.
 The cool thing is: all colors used in this app is on Glootie's skin. 
 And yes, I've developed his app.
@@ -10,6 +9,9 @@ This project is a starting point for a Flutter application.
 
 ## Run app
 flutter run
+
+## Run Tests
+flutter test
 
 ## Show Tests Coverage
 
@@ -24,10 +26,6 @@ After, run command for generate tests:
 Generate files for show coverage tests:
 
 ```genhtml -o coverage coverage/lcov.info```
-
-
-## App Architecture
-
 
 ## Dependencies
 
@@ -73,4 +71,9 @@ Generate files for show coverage tests:
     - GitHub: <https://github.com/felangel/bloc/tree/master/packages/bloc_test>
     - License: [MIT](https://pub.dev/packages/bloc_test/license)
   
+  # mocktail_image_network: ^0.1.0
+    -Easy way to test network images.
+    - Dart Package: <https://pub.dev/packages/network_image_mock>
+    - GitHub: <https://github.com/stelynx/network_image_mock>
+    - License: [BSD](https://pub.dev/packages/network_image_mock/license)
   
