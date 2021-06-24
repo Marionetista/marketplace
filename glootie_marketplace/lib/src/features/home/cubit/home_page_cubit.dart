@@ -15,7 +15,9 @@ class HomePageCubit extends Cubit<HomePageState> {
 
   final CustomGraphQLClient graphQL;
 
-  Future<void> getCustomer() async {
+  Future<void> getCustomer({
+    bool hasError = false,
+  }) async {
     try {
       emit(HomePageLoading());
 
@@ -33,7 +35,11 @@ class HomePageCubit extends Cubit<HomePageState> {
 
       final customer = CustomerModel.fromJson(data);
 
-      emit(HomePageLoaded(customer: customer));
+      if (hasError) {
+        emit(HomePageError());
+      } else {
+        emit(HomePageLoaded(customer: customer));
+      }
     } catch (error) {
       emit(HomePageError());
     }

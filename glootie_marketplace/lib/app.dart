@@ -7,8 +7,7 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'src/features/home/home_page.dart';
 
 class App extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
+  App() {
     final link = HttpLink(
       'https://staging-nu-needful-things.nubank.com.br/query',
       defaultHeaders: <String, String>{
@@ -18,15 +17,18 @@ class App extends StatelessWidget {
       },
     );
 
-    final client = ValueNotifier<CustomGraphQLClient>(
+    client = ValueNotifier<CustomGraphQLClient>(
       CustomGraphQLClient(
         link,
-        GraphQLCache(
-          store: InMemoryStore(),
-        ),
+        GraphQLCache(store: InMemoryStore()),
       ),
     );
+  }
 
+  late final ValueNotifier<CustomGraphQLClient> client;
+
+  @override
+  Widget build(BuildContext context) {
     return GraphQLProvider(
       client: client,
       child: MaterialApp(
@@ -35,7 +37,7 @@ class App extends StatelessWidget {
         home: BlocProvider<HomePageCubit>(
           create: (context) => HomePageCubit(
             client.value,
-          )..getCustomer(),
+          )..getCustomer(hasError: true),
           child: HomePage(),
         ),
       ),

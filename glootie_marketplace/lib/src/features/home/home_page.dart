@@ -17,7 +17,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  HomePageCubit get cubit => BlocProvider.of<HomePageCubit>(context);
+  // HomePageCubit get cubit => BlocProvider.of<HomePageCubit>(context);
 
   @override
   Widget build(BuildContext context) =>
@@ -29,6 +29,8 @@ class _HomePageState extends State<HomePage> {
 
           final offers = customer?.offers ?? <OfferModel>[];
 
+          final error = state is HomePageError;
+
           return Scaffold(
             backgroundColor: Colors.white,
             body: SafeArea(
@@ -38,26 +40,43 @@ class _HomePageState extends State<HomePage> {
                         color: AppColors.pinky,
                       ),
                     )
-                  : Container(
-                      color: AppColors.whitePinky,
-                      child: CustomScrollView(
-                        slivers: [
-                          SliverAppBar(
-                            backgroundColor: Colors.white,
-                            expandedHeight: 120.0,
-                            flexibleSpace: buildPageTitle(customer?.name ?? ''),
-                          ),
-                          SliverToBoxAdapter(
-                            child: Column(
-                              children: [
-                                buildBalanceDisplay(customer?.balance ?? 0),
-                                buildOffersList(offers),
-                              ],
+                  : error
+                      ? TextButton(
+                          onPressed: () {
+                            context.read<HomePageCubit>().getCustomer();
+                          },
+                          child: Center(
+                            child: Text(
+                              'Retry',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: AppColors.pinky,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
-                        ],
-                      ),
-                    ),
+                        )
+                      : Container(
+                          color: AppColors.whitePinky,
+                          child: CustomScrollView(
+                            slivers: [
+                              SliverAppBar(
+                                backgroundColor: Colors.white,
+                                expandedHeight: 120.0,
+                                flexibleSpace:
+                                    buildPageTitle(customer?.name ?? ''),
+                              ),
+                              SliverToBoxAdapter(
+                                child: Column(
+                                  children: [
+                                    buildBalanceDisplay(customer?.balance ?? 0),
+                                    buildOffersList(offers),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
             ),
           );
         },
@@ -123,12 +142,12 @@ class _HomePageState extends State<HomePage> {
         vertical: 5.0,
         horizontal: 24.0,
       ),
-      leading: Image.network(
-        offer.product.image,
-        width: 60.0,
-        height: 60.0,
-        fit: BoxFit.cover,
-      ),
+      // leading: Image.network(
+      //   offer.product.image,
+      //   width: 60.0,
+      //   height: 60.0,
+      //   fit: BoxFit.cover,
+      // ),
       title: Text(
         offer.product.name,
         textAlign: TextAlign.left,
@@ -159,7 +178,11 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
         );
-        cubit.updateCustomer(result);
+
+        // context.read<HomePageCubit>().updateCustomer(result);
+
+        context.watch<HomePageCubit>().updateCustomer(result);
+        // cubit.updateCustomer(result);
       },
     );
   }
